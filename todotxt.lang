@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+ Author (original): David Avsajanishvili <avsd05@gmail.com>
+ Colaborator: Eduardo Santana <eduardo.ufpb@gmail.com>
+
+ Github: https://github.com/edusantana/asciidoc-highlight
+ Help: https://developer.gnome.org/gtksourceview/stable/lang-tutorial.html
+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the
+ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, MA 02111-1307, USA.
+
+-->
+<language id="todotxt" _name="todo.txt" version="2.0" _section="Markup">
+  <metadata>
+    <property name="mimetypes">text/plain</property>
+    <property name="globs">todo.txt;done.txt</property>
+    <!--property name="line-comment-start">// </property-->
+  </metadata>
+
+
+  <styles>
+    <!-- done priority date1 date2 text +project @context key:value -->
+    <style id="todo-done"     _name="Completude"  map-to="def:note"/>
+    <style id="todo-priority" _name="Priority"    map-to="def:constant"/>
+    <style id="todo-date"     _name="Date"        map-to="def:constant"/>
+    <style id="todo-text"     _name="Text"        map-to="def:string"/>
+    <style id="todo-project"  _name="Project"     map-to="def:keyword"/>
+    <style id="todo-context"  _name="Context"     map-to="def:note"/>
+    <style id="todo-key"      _name="Key"         map-to="def:type"/>
+    <style id="todo-value"    _name="Value"       map-to="def:constant"/>
+    <style id="todo-colon"    _name="Colon"       map-to="def:special-char"/>
+  </styles>
+
+  <definitions>
+
+    <context id="priority" style-ref="todo-priority">
+      <match>[(][A-Z][)]</match>
+    </context>
+    <context id="contexts" style-ref="todo-context">
+      <prefix>\@</prefix>
+      <keyword>[^\s.]+</keyword>
+    </context>
+    <context id="projects" style-ref="todo-project">
+      <prefix>\+</prefix>
+      <keyword>[^\s.]+</keyword>
+    </context>
+    <context id="colon" style-ref="todo-colon">
+      <keyword>:</keyword>
+    </context>
+
+    <context id="date" style-ref="todo-date">
+      <match>[0-9]+-[0-9]+-[0-9]+</match>
+    </context>
+
+    <!--
+    *******************************
+    * FINAL CONTEXT
+    *******************************
+    -->
+    <context id="todotxt">
+        <include>
+          <context ref="priority" />
+          <context ref="contexts" />
+          <context ref="projects" />
+          <context ref="colon" />
+          <context ref="date" />
+        </include>
+    </context>
+  </definitions>
+</language>
